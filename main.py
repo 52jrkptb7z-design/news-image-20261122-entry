@@ -220,7 +220,6 @@ def draw_tanker(cv, x, y, w, with_flame):
 def draw_flag_pl(cv, x, y):
     cv.fill_rect(x, y, 34, 10, (240, 240, 240))
     cv.fill_rect(x, y + 10, 34, 10, RED)
-    cv.fill_rect(x, y, 34, 20, CARD_EDGE) if False else None
     cv.line(x, y, x + 34, y, CARD_EDGE, 1)
     cv.line(x, y + 20, x + 34, y + 20, CARD_EDGE, 1)
 
@@ -246,11 +245,17 @@ def draw_star(cv, cx, cy, r, color):
 
 
 def draw_boat(cv, x, y):
-    cv.fill_poly([(x, y), (x + 64, y), (x + 54, y + 16), (x + 10, y + 16)], ORANGE)
-    cv.fill_rect(x + 30, y - 30, 3, 30, INK)
-    cv.fill_poly([(x + 36, y - 30), (x + 36, y - 4), (x + 56, y - 4)], INK)
-    for i in range(4):
-        cv.fill_rect(x - 6 + i * 22, y + 24, 14, 3, SEA_LIGHT)
+    """A small sailboat in a 60x41 box; (x, y) is the box's top-left.
+
+    Sized and placed to sit in a card's top-right corner, clear of the
+    headline block, like the flag, globe and star icons.
+    """
+    cv.fill_rect(x + 28, y, 3, 22, INK)
+    cv.fill_poly([(x + 33, y), (x + 33, y + 20), (x + 49, y + 20)], INK)
+    cv.fill_poly([(x, y + 24), (x + 60, y + 24), (x + 52, y + 34),
+                  (x + 8, y + 34)], ORANGE)
+    for i in range(3):
+        cv.fill_rect(x + 4 + i * 19, y + 38, 12, 3, SEA_LIGHT)
 
 
 def draw_bolt(cv, cx, cy):
@@ -273,9 +278,9 @@ def story_card(cv, x, y, w, h, tag, tag_color, headline, summary, icon):
     elif icon == "star":
         draw_star(cv, x + w - 30, y + 18, 13, GOLD)
     elif icon == "boat":
-        draw_boat(cv, x + w - 92, y + 66)
+        draw_boat(cv, x + w - 74, y + 3)
     elif icon == "bolt":
-        draw_bolt(cv, x + w - 34, y + 62)
+        draw_bolt(cv, x + w - 30, y + 23)
     hy = y + 44
     for ln in wrap_text(headline, 3, w - 28):
         draw_text(cv, x + 14, hy, ln, 3, INK)
